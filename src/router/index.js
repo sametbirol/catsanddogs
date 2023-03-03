@@ -1,22 +1,28 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import ViewMainPage from '@/views/ViewMainPage.vue'
-import ViewBos from '@/views/ViewBos.vue'
+import ViewAuth from '@/views/ViewAuth.vue'
+import ViewProfile from '@/views/ViewProfile.vue'
 
 const routes = [
 	{
 		path: '/',
-		name: 'bos',
-		component: ViewBos
+		name: 'Auth',
+		component: ViewAuth
 	},
 	{
 		path: '/mainpage',
 		name: 'posts',
 		component: ViewMainPage
+	},
+	{
+		path: '/profile',
+		name: 'profile',
+		component: ViewProfile
 	}
 ]
 
 const router = createRouter({
-	history: createWebHashHistory(),
+	history: createWebHistory(),
 	routes: routes
 })
 
