@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 
-export const useStore = defineStore( 'storem', {
+export const useStoreBasic = defineStore( 'storeBasic', {
 
 	state: () => {
 		return {
-
+			side: "Animal",
 		}
 	},
 	

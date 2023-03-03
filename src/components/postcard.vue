@@ -1,10 +1,9 @@
 <template>
 <v-card
-	  class="mx-auto border"
-	  color="white"
+	  class="mx-auto "
+	  color="grey-lighten-3"
 	  theme="high-contrast"
 	  max width="500"
-	  prepend-icon="mdi-paw"
 	>
 
 
@@ -18,7 +17,7 @@
 
         <v-list-item-title>{{ bitanem }}</v-list-item-title>
 
-        <v-list-item-subtitle class="font-weight-light">Animal Lover</v-list-item-subtitle>
+        <v-list-item-subtitle class="font-weight-light">{{store.side}} Lover</v-list-item-subtitle>
 
         <template v-slot:append>
           <div class="justify-self-end">
@@ -86,6 +85,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useStoreBasic } from '@/stores/storeBasic.js'
+// store
+const store = useStoreBasic()
 
 const upvotenumber = ref("")
 upvotenumber.value = 10
