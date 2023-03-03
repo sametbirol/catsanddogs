@@ -17,7 +17,7 @@
           src="@/assets/cat1.png"
           cover
           class="text-white"
-          @click="closeModal"
+          @click="closeModal('Cat')"
         ></v-img>
       </v-col>
       <v-col
@@ -26,7 +26,7 @@
           src="@/assets/dog.png"
           cover
           class="text-white"
-          @click="closeModal"
+          @click="closeModal('Dog')"
         ></v-img>
       </v-col>
     </v-row >
@@ -61,16 +61,11 @@
 imports
 */
 import { onClickOutside } from '@vueuse/core'
-import { ref,onMounted,onUnmounted } from 'vue';
-// import { useStoreNotes } from '@/stores/storeNotes';
-/*
-    stores
-*/ 
-    // const storeNotes = useStoreNotes()
-/*
-emits
-*/
-const emit = defineEmits(['update:modelValue'])
+import { ref,onMounted,onUnmounted } from 'vue'
+import { useStoreBasic } from '@/stores/storeBasic.js'
+// store
+const store = useStoreBasic()
+
 /*
 props
 */
@@ -87,8 +82,12 @@ const props = defineProps({
 /*
   handle close clicked
 */
-const closeModal = () => {
+
+const emit = defineEmits(['update:modelValue'])
+
+const closeModal = (side) => {
     emit('update:modelValue',false)
+    store.side = side
 }
 /*
 refs

@@ -47,7 +47,7 @@
             <v-card-actions >
               
               <v-spacer></v-spacer>
-              <v-btn color="info" id="myBtn" type="submit" @click="onsubmit" v-keyenter>
+              <v-btn color="info" id="myBtn" type="submit" @click="onsubmit" to="/mainpage" v-keyenter>
                 {{formTitle}}
               </v-btn>
             </v-card-actions>
@@ -62,15 +62,13 @@
 </template>
 
 <script setup>
-import { ref,computed, reactive} from 'vue'
+import { ref,computed, reactive , watch} from 'vue'
 import pickyoursideModal from '@/modals/pickyourside.vue'
 import { vAutofocus } from '@/directives/vAutofocus';
 import { vKeyenter } from '@/directives/vKeyenter';
-// import { useStoreAuth } from '@/stores/storeAuth'
-
-
+import { useStoreBasic } from '@/stores/storeBasic.js'
 // store
-// const storeAuth = useStoreAuth()
+const store = useStoreBasic()
 // login or register
 const formTitle = computed(() =>{
   return (active_tab.value == 1 ? 'Login' : 'Register')
@@ -93,8 +91,7 @@ const tabs = [
   modals
 */
 const modals = reactive({
-  pickyourside: true ,
-  starwarseffect:true,
+  pickyourside: false ,
 })
 /*
   credential
@@ -121,4 +118,11 @@ const onsubmit = () => {
     }
   }
 }
+/*watch
+*/
+watch(active_tab, async(newData) => {
+  if(newData == 2 ){
+    modals.pickyourside = true
+  }
+})
 </script>
