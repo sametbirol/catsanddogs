@@ -25,13 +25,21 @@ export const useStoreBasic = defineStore( 'storeBasic', {
 				console.error(error);
 			  });
 	},
-		createUser(data) {
-			axios.post('auth',data,{
+		createUser(data){
+			axios.post('auth/register', data,{
 				headers: {
 				  'Content-Type': 'application/json'
 				}
-			  }).then(res => {
-				this.msgg = res.data.msg})
-	}
+			})
+			.then(res => console.log(res))
+		},
+		loginUser(data){
+			axios.post('auth/login', data, {
+				headers:{
+					'Content-Type': 'application/json'
+				}
+			})
+			.then(res => console.log(res))
+		}
 }
 })

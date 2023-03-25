@@ -12,7 +12,7 @@
         <v-card-text>
             <p>Sign in with your username and password:{{ store.msg }}</p>
             <v-form id="myInput" v-autofocus>
-                <v-text-field outline label="Username" type="text" v-model="credential.email" ></v-text-field>
+                <v-text-field outline label="Username" type="text" v-model="credential.username" v-autofocus></v-text-field>
                 <v-text-field outline hide-details label="Password" type="password"
                     v-model="credential.password"></v-text-field>
             </v-form>
@@ -21,7 +21,7 @@
         <v-card-actions>
 
             <v-spacer></v-spacer>
-            <v-btn color="info" id="myBtn" type="submit" @click="onsubmit" to="/mainpage" >
+            <v-btn color="info" id="myBtn" type="submit" @click="onsubmit" v-keyenter>
                 Login
             </v-btn>
         </v-card-actions>
@@ -39,25 +39,18 @@ const store = useStoreBasic()
   credential
 */
 const credential = reactive({
-    email: '',
+    username: '',
     password: '',
 })
 /*  
   submit
 */
 const onsubmit = () => {
-    if (!credential.email || !credential.password) {
+    if (!credential.username || !credential.password) {
         alert('Please enter your email and password')
     }
     else {
-        if (active_tab.value == 2) {
-            console.log('register credential:', credential)
-            // storeAuth.createUser(credential)
-        }
-        else {
-            console.log('login credential:', credential)
-            // storeAuth.loginUser(credential)
-        }
+        store.loginUser(credential)
     }
 }
 /*watch
