@@ -7,7 +7,7 @@ export const useStoreBasic = defineStore( 'storeBasic', {
 		return {
 			side: "Animal",
 			msg: Array,
-			msgg: Array
+			msgg: ""
 		}
 	},
 	
@@ -24,15 +24,14 @@ export const useStoreBasic = defineStore( 'storeBasic', {
 			  .catch((error) => {
 				console.error(error);
 			  });
-
 	},
-		createUser(data){
-			axios.post('auth', data,{
+		createUser(data) {
+			axios.post('auth',data,{
 				headers: {
-					'Content-Type': 'application/json'
+				  'Content-Type': 'application/json'
 				}
-			})
-			.then(res => console.log(res))
-		}
+			  }).then(res => {
+				this.msgg = res.data.msg})
+	}
 }
 })
