@@ -26,22 +26,13 @@ export const useStoreBasic = defineStore( 'storeBasic', {
 			  });
 
 	},
-	// createUser(data) {
-	// 	axios.post('auth',
-	// 		{
-	// 			"firstname": data.first_name,
-	// 			"lastname": data.last_name,
-	// 			"email": data.email,
-	// 			"username": data.username,
-	// 			"password": data.password,
-	// 		}
-	// 		)
-	// 	  .then((res) => {
-	// 		this.msgg = res.data;
-	// 	  })
-	// 	  .catch((error) => {
-	// 		console.error(error)
-	// 	  });
-	// 	}
+		createUser(data){
+			axios.post('auth', data,{
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			.then(res => console.log(res))
+		}
 }
 })

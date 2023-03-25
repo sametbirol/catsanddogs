@@ -1,7 +1,7 @@
 <template>
     <v-app>
-        <NavBar/>
-    <v-container class="my-15">
+        <NavBar style="z-index: 2;"></NavBar>
+    <v-container class="my-15" style="z-index: 1;">
         <RouterView/>
     </v-container>
     </v-app>

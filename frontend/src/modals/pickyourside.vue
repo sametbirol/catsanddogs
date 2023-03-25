@@ -6,28 +6,41 @@
       height="auto"
       persistent
     >
-      
       <v-card
         ref="modalCardRef"
       >
+
+
       <v-row class="w-auto">
       <v-col
       cols="6">
+      <v-hover>
+        <template v-slot:default="{isHovering, props}">
         <v-img
           src="@/assets/cat1.png"
+          v-bind:="props"
           cover
           class="text-white"
           @click="closeModal('Cat')"
+          :style="isHovering ? 'border: 5px solid orange' : 'border: 0px'"
         ></v-img>
+        </template>
+      </v-hover>
       </v-col>
       <v-col
       cols="6">
+      <v-hover>
+        <template v-slot:default="{isHovering, props}">
         <v-img
           src="@/assets/dog.png"
+          v-bind:="props"
           cover
           class="text-white"
           @click="closeModal('Dog')"
+          :style="isHovering ? 'border: 5px solid orange' : 'border: 0px'"
         ></v-img>
+      </template>
+      </v-hover>
       </v-col>
     </v-row >
         <v-card-title class="text-h4  ">
@@ -52,6 +65,7 @@
 
       
       </v-card>
+    
     </v-dialog>
   </v-row>
 </template>

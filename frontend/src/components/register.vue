@@ -51,18 +51,18 @@ const modals = reactive({
   credential
 */
 const credential = reactive({
-    email: '',
-    username: '',
-    first_name: '',
-    last_name: '',
-    password: '',
-    verify_password: '',
+    'email': '',
+    'username': '',
+    'first_name': '',
+    'last_name': '',
+    'password': '',
+    'verify_password': '',
 })
 /*  
   submit
 */
 const onsubmit = () => {
-    // store.createUser(credential)
+    store.createUser(credential)
 }
 
 onBeforeMount(() => {
