@@ -5,6 +5,9 @@ import models
 from sqlalchemy.orm import Session
 from database import SessionLocal, engine
 from fastapi.responses import HTMLResponse
+from fastapi.security import OAuth2PasswordRequestForm
+
+# bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -21,23 +24,23 @@ router = APIRouter(
     tags=["auth"],
     responses={401: {"user": "Not authenticated"}}
 )
-# class Loginuser():
-#     def __init__(self, request: Request):
-#         self.request: Request = request
-#         self.username: Optional[str] = None
-#         self.password: Optional[str] = None
-#         self.email: Optional[str] = None
-#         self.firstname: Optional[str] = None
-#         self.lastname: Optional[str] = None
 
-#     async def create_oath_user(self):
-#         user = await self.request.user()
-#         self.username = user.get("username")
-#         self.password = user.get("password")
-#         self.email = user.get("email")
-#         self.firstname = user.get("firstname")
-#         self.lastname = user.get("lastname")
 
+class user(BaseModel):
+    email: str
+    username: str
+    first_name: str
+    last_name: str
+    password: str
+    verify_password: str
+    
+    
+# def get_password_hash(password):
+#     return bcrypt_context.hash(password)
+# 
+# def verify_password(plain_password, hash_password):
+#     return bcrypt_context.verify(plain_password, hash_password)
+    
 def get_db():
     try:
         db = SessionLocal()
@@ -75,3 +78,4 @@ async def create_new_user(user: CreateUser,db:Session = Depends(get_db)):
     except HTTPException:
         msg = "Unknown Error Occured"
         return {"msg": msg}
+

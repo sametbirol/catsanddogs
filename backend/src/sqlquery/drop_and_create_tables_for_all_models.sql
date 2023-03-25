@@ -6,13 +6,14 @@ DROP TABLE IF EXISTS pets;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
-    id INTEGER NOT NULL,
+    id SERIAL NOT NULL,
     email VARCHAR(255) NOT NULL,
     username VARCHAR(50) NOT NULL,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
     hashed_password VARCHAR(255),
     is_active BOOLEAN DEFAULT False,
+    side VARCHAR(10),
     PRIMARY KEY (id),
     UNIQUE (email),
     UNIQUE (username)
@@ -31,10 +32,10 @@ CREATE TABLE posts (
     id INTEGER NOT NULL,
     title VARCHAR(255),
     text VARCHAR,
-    images BLOB,
+    images BYTEA,
     owner_id INTEGER,
     pet_id INTEGER,
-    timestamp DATETIME,
+    timestamp TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY(owner_id) REFERENCES users (id),
     FOREIGN KEY(pet_id) REFERENCES pets (id)
