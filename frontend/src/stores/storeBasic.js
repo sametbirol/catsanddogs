@@ -7,7 +7,7 @@ export const useStoreBasic = defineStore( 'storeBasic', {
 		return {
 			side: "Animal",
 			msg: Array,
-			msgg: Array
+			msgg: ""
 		}
 	},
 	
@@ -24,24 +24,14 @@ export const useStoreBasic = defineStore( 'storeBasic', {
 			  .catch((error) => {
 				console.error(error);
 			  });
-
 	},
-	// createUser(data) {
-	// 	axios.post('auth',
-	// 		{
-	// 			"firstname": data.first_name,
-	// 			"lastname": data.last_name,
-	// 			"email": data.email,
-	// 			"username": data.username,
-	// 			"password": data.password,
-	// 		}
-	// 		)
-	// 	  .then((res) => {
-	// 		this.msgg = res.data;
-	// 	  })
-	// 	  .catch((error) => {
-	// 		console.error(error)
-	// 	  });
-	// 	}
+		createUser(data) {
+			axios.post('auth',data,{
+				headers: {
+				  'Content-Type': 'application/json'
+				}
+			  }).then(res => {
+				this.msgg = res.data.msg})
+	}
 }
 })

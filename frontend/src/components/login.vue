@@ -12,7 +12,7 @@
         <v-card-text>
             <p>Sign in with your username and password:{{ store.msg }}</p>
             <v-form id="myInput" v-autofocus>
-                <v-text-field outline label="Username" type="text" v-model="credential.email" v-autofocus></v-text-field>
+                <v-text-field outline label="Username" type="text" v-model="credential.email" ></v-text-field>
                 <v-text-field outline hide-details label="Password" type="password"
                     v-model="credential.password"></v-text-field>
             </v-form>
@@ -21,7 +21,7 @@
         <v-card-actions>
 
             <v-spacer></v-spacer>
-            <v-btn color="info" id="myBtn" type="submit" @click="onsubmit" to="/mainpage" v-keyenter>
+            <v-btn color="info" id="myBtn" type="submit" @click="onsubmit" to="/mainpage" >
                 Login
             </v-btn>
         </v-card-actions>
