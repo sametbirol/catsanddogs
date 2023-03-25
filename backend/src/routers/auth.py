@@ -1,4 +1,4 @@
-from fastapi import Depends, Form, HTTPException, Request, Response, status, APIRouter
+from fastapi import Depends, HTTPException, Request, Response, status, APIRouter
 from pydantic import BaseModel
 from typing import Optional
 import models
@@ -85,12 +85,13 @@ async def create_new_user(user:reguser,db:Session = Depends(get_db)):
     try:
         validation1= db.query(models.Users).filter(models.Users.username == user.username).first()
         validation2= db.query(models.Users).filter(models.Users.email == user.email).first()
-        
+
+        if user.password != user.verify_password:
+            msg = "Passwords do not match"
+            return {"msg":msg}
         if validation1 is not None or validation2 is not None:
             msg = "Invalid register request"
-            return {"request":user,"msg":msg}
-        if user.password != user.verify_password:
-            return "Passwords does not match"
+            return {"msg":msg}
         user_model= models.Users()
         user_model.email = user.email
         user_model.first_name = user.first_name
@@ -101,7 +102,7 @@ async def create_new_user(user:reguser,db:Session = Depends(get_db)):
         db.add(user_model)
         db.commit()
         msg = "User succesfully created"
-        return {"request":user,"msg":msg}
+        return {"msg":msg}
     except HTTPException:
         msg = "Unknown Error Occured"
         return {"request": user, "msg": msg}
