@@ -5,8 +5,8 @@
     </v-tab>
   </v-tabs>
   <v-container>
-    <Login v-if="active_tab == 1 ? true : false "></Login>
-    <Register v-if="active_tab == 2 ? true : false "></Register>
+    <Login v-if="active_tab == 1 ? true : false"></Login>
+    <Register v-if="active_tab == 2 ? true : false"></Register>
   </v-container>
 </template>
 
@@ -37,7 +37,7 @@ const tabs = [
     name: 'Register'
   },
 ]
-onBeforeMount(() => {
-  store.getMessage()
-})
+// onBeforeMount(() => {
+//   store.getMessage()
+// })
 </script>
