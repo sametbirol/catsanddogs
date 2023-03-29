@@ -56,6 +56,6 @@ const onsubmit = () => {
 /*watch
 */
 onBeforeMount(() => {
-    store.getMessage()
+    store.authenticate_user()
 })
 </script>
