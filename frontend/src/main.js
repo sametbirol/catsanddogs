@@ -8,14 +8,16 @@
 import App from './App.vue'
 
 // Composables
-import { createApp } from 'vue'
+import { createApp,markRaw } from 'vue'
 import { createPinia } from 'pinia'
 import axios from 'axios';
 
 // Plugins
 import { registerPlugins } from '@/plugins'
 import router from '@/router'
-
+createPinia().use(({ store }) => {
+	store.router = markRaw(router)
+	})
 const app = createApp(App)
 			.use(createPinia())
 			

@@ -41,9 +41,6 @@ class loguser(BaseModel):
     password: str
 
 
-outh2_bearer = OAuth2PasswordBearer(tokenUrl="token")
-
-
 def get_db():
     try:
         db = SessionLocal()
@@ -68,7 +65,7 @@ def authenticate_user(username: str, password: str, db):
         return False
     if not verify_password(password, user.hashed_password):
         return False
-    return True
+    return user
 
 
 def create_access_token(username: str, user_id: int, expires_delta: Optional[timedelta]):
@@ -89,70 +86,81 @@ async def get_current_user(request: Request):
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         user_id: int = payload.get("id")
-        
+
         if username is None or user_id is None:
-            logout(request)
+            # logout(request)
+            return None
         return {"username": username, "id": user_id}
     except JWTError:
         raise HTTPException(status_code=404, detail="Not Found")
 
 
 @router.get("/")
-async def auth_main(request:Request,db: Session = Depends(get_db)):
-    userr = await get_current_user( request)
-    user = db.query(models.Users).filter(models.Users.id == userr.get("id")).first()
-    return {"user" : user}
+async def auth_main(request: Request, db: Session = Depends(get_db)):
+    userr = await get_current_user(request)
+    if userr is None:
+        return False
+    user = db.query(models.Users).filter(
+        models.Users.id == userr.get("id")).first()
+    if user is None:
+        return False
+    return {"user": user}
 
 
 @router.post("/register")
-async def create_new_user(user: reguser, db: Session = Depends(get_db)):
-
-    try:
-        validation1 = db.query(models.Users).filter(
-            models.Users.username == user.username).first()
-        validation2 = db.query(models.Users).filter(
-            models.Users.email == user.email).first()
-
-        if user.password != user.verify_password:
-            msg = "Passwords do not match"
-            return {"msg": msg}
-        if validation1 is not None or validation2 is not None:
-            msg = "Invalid register request"
-            return {"msg": msg}
-        user_model = models.Users()
-        user_model.email = user.email
-        user_model.first_name = user.first_name
-        user_model.last_name = user.last_name
-        user_model.hashed_password = get_password_hash(user.password)
-        user_model.username = user.username
-        user_model.side = user.side
-        user_model.is_active: bool = True
-        db.add(user_model)
-        db.commit()
-        msg = "User succesfully created"
+async def register(user: reguser, db: Session = Depends(get_db)):
+    validation1 = db.query(models.Users).filter(
+        models.Users.username == user.username).first()
+    validation2 = db.query(models.Users).filter(
+        models.Users.email == user.email).first()
+    if user.password != user.verify_password:
+        msg = "Passwords do not match"
         return {"msg": msg}
-    except HTTPException:
-        msg = "Unknown Error Occured"
-        return {"request": user, "msg": msg}
+    if validation1 is not None or validation2 is not None:
+        msg = "Invalid register request"
+        return {"msg": msg}
+    user_model = models.Users()
+    user_model.email = user.email
+    user_model.first_name = user.first_name
+    user_model.last_name = user.last_name
+    user_model.hashed_password = get_password_hash(user.password)
+    user_model.username = user.username
+    user_model.side = user.side
+    user_model.is_active: bool = True
+    db.add(user_model)
+    db.commit()
+    msg = "User succesfully created"
+    return {"msg": msg,"username":user.username,"password":user.password}
+
+@router.post("/token")
+async def login_for_access_token(response: Response, form_data,
+                                 db: Session = Depends(get_db)):
+    user = authenticate_user(form_data.username, form_data.password, db)
+    if not user:
+        return False
+    token_expires = timedelta(minutes=60)
+    token = create_access_token(
+        user.username, user.id, expires_delta=token_expires)
+    response.set_cookie(key="access_token", value=token, httponly=True)
+    return {"token": token}
 
 
 @router.post("/login")
 async def login_to_user(user: loguser, response: Response, db: Session = Depends(get_db)):
     try:
-        getuser = db.query(models.Users).filter(
-            models.Users.username == user.username).first()
+        # getuser = db.query(models.Users).filter(
+        #     models.Users.username == user.username).first()
+        validate_user_cookie = await login_for_access_token(response=response, form_data=user, db=db)
         if user.username is None or user.password is None:
             msg = "Username or password cannot be empty"
             return {"request": user, "msg": msg}
-
-        elif authenticate_user(user.username, user.password, db):
-            token = create_access_token(
-                getuser.username, getuser.id, timedelta(minutes=10))
-            # response = JSONResponse(content={"message": "OK"})
-            response.set_cookie(key="access_token", value=token, httponly=True)
-            return token
+        elif not validate_user_cookie:
+            msg = "Incorrect Username or Password"
+            return {"msg":msg}
         else:
-            get_user_exception()
+            msg = "Login Succesful"
+            # await auth_main()
+            return {"msg":msg}
 
     except HTTPException:
         msg = "Unknown Error Occured"
@@ -164,7 +172,7 @@ async def logout(request: Request, response: Response):
     msg = "Logout successful"
     # response = templates.TemplateResponse("login.html", {"request": request, "msg": msg})
     response.delete_cookie(key="access_token")
-    return {"request": request, "msg": msg}
+    return {"msg": msg}
 
 # Exceptions
 

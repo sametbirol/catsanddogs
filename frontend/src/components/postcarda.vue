@@ -15,9 +15,9 @@
           ></v-avatar>
         </template>
 
-        <v-list-item-title>{{ bitanem }}</v-list-item-title>
+        <v-list-item-title>{{ store.user.username }}</v-list-item-title>
 
-        <v-list-item-subtitle class="font-weight-light">{{store.side}} Lover</v-list-item-subtitle>
+        <v-list-item-subtitle class="font-weight-light">{{store.user.side}} Lover</v-list-item-subtitle>
 
         <template v-slot:append>
           <div class="justify-self-end">
@@ -54,9 +54,9 @@
 	  </template>
   
 	  <v-card-text class="text-h6 py-2 border-b border-t">
-		<span class="font-weight-black mr-2">{{ bitanem }}</span>
+		<!-- <span class="font-weight-black mr-2">{{ bitanem }}</span> -->
 
-		<span style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Numquam rem saepe est non illo quia dignissimos, quod odit reprehenderit explicabo molestias pariatur facere, quisquam, provident mollitia adipisci aperiam dolor totam.</span>
+		<span style="font-family:'Lucida Sans';">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Numquam rem saepe est non illo quia dignissimos, quod odit reprehenderit explicabo molestias pariatur facere, quisquam, provident mollitia adipisci aperiam dolor totam.</span>
 	  </v-card-text>
   
 	  <v-card-actions>
@@ -92,5 +92,5 @@ const store = useStoreBasic()
 const upvotenumber = ref("")
 upvotenumber.value = 10
 
-const bitanem = ref("Ecem")
+// const bitanem = ref("Ecem")
 </script>

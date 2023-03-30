@@ -1,6 +1,9 @@
 <template>
 
 	<v-container>
+		<div>
+	{{ store.user }}
+</div>
 		<PostCard 
 		v-for="i in 3" 
 		class="mb-15"/>
