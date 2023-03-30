@@ -55,7 +55,5 @@ const onsubmit = () => {
 }
 /*watch
 */
-onBeforeMount(() => {
-    store.authenticate_user()
-})
+
 </script>

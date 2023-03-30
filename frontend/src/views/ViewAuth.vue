@@ -37,7 +37,7 @@ const tabs = [
     name: 'Register'
   },
 ]
-// onBeforeMount(() => {
-//   store.getMessage()
-// })
+onBeforeMount(() => {
+  store.get_current_user_by_token()
+})
 </script>

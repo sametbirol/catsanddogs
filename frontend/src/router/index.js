@@ -6,7 +6,7 @@ import { useStoreBasic } from '@/stores/storeBasic.js'
 let store
 const routes = [
 	{
-		path: '/',
+		path: '/auth',
 		name: 'Auth',
 		component: ViewAuth
 	},
@@ -29,17 +29,18 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
 	const store = useStoreBasic()
+	
+	store.get_current_user_by_token()
 	try {
-		if (store.user.id && to.name === 'Auth') {
+		if (store.user && to.name === 'Auth') {
 			return { name: 'posts' }
 		}
-		if (!store.user.id && to.name !== 'Auth') {
+		if (!store.user && to.name !== 'Auth') {
 			return false
 		}
-		if (from.name !== 'Auth' && to.name === 'Auth') {
-			store.logout()
-			return { name: 'Auth' }
-		}
+		// if(to.name !== 'Auth' || to.name !== 'posts' || to.name !== 'profile' ){
+		// 	return { name: 'Auth' }
+		// }
 	}
 	catch(err) {
 		console.log(err)

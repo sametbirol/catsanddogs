@@ -22,8 +22,8 @@
                 
                 
                 class="bg-orange-darken-1"
-                to="/"
                 variant="plain"
+                @click="store.logout()"
               >
               Log Out </v-btn>
               <v-btn
@@ -38,7 +38,12 @@
   </v-container>
 </template>
 
-  
+<script setup>
+
+import { useStoreBasic } from '@/stores/storeBasic.js'
+const store = useStoreBasic()
+
+</script>
 <style scoped>
 .link > *{text-decoration: none;color:yellowgreen;margin: 10px;text-transform: lowercase;
 }

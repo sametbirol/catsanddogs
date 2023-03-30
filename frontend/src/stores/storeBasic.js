@@ -1,15 +1,15 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import router from '@/router'
+import { useRouter } from 'vue-router'
+
 
 export const useStoreBasic = defineStore('storeBasic', {
 
 	state: () => {
 		return {
 			side: "Animal",
-			msg: Array,
-			msgg: "",
 			user: null,
+			router: useRouter()
 		}
 	},
 
@@ -18,18 +18,25 @@ export const useStoreBasic = defineStore('storeBasic', {
 	},
 
 	actions: {
-		authenticate_user() {
-			axios.get('auth')
+		async init() {
+			await axios.get('/auth/')
 				.then((res) => {
-					// this.msg = res.data;
-					this.msg = res.data.user
-					if (this.msg) {
-						return true
+					this.user = res.data.user
+					if (res.data == false) {
+						this.router.push("/auth")
 					}
+					this.router.push("/mainpage")
 				})
+				.catch((error) => {
+					console.error(error);
+				});
+		},
+		async get_current_user_by_token() {
+			await axios.get('/auth/')
 				.then((res) => {
-					if (res) {
-						router.push("/mainpage")
+					this.user = res.data.user
+					if (res.data == false) {
+						this.router.push("/auth")
 					}
 				})
 				.catch((error) => {
@@ -43,24 +50,29 @@ export const useStoreBasic = defineStore('storeBasic', {
 					'Content-Type': 'application/json'
 				}
 			})
-				.then(res => console.log(res))//returns "user succesfully created" if succesful
+				.then((res) => {
+					let loginform = { "username": res.data.username, "password": res.data.password }
+					this.loginUser(loginform)
+				})
 		},
-		loginUser(data) {
-			axios.post('auth/login', data, {
+		async loginUser(data) {
+			await axios.post('auth/login', data, {
 				headers: {
 					'Content-Type': 'application/json'
 				}
-			})
-				.then(res => console.log(res))//returns token
+			}).then(res => {
+				this.init()
+			}
+			)
 		},
-		logout(){
-			axios.get('auth/logout')
-			.then((res) => {
-				console.log(res)
-			})
-			.catch((error) => {
-				console.error(error);
-			});
+		async logout() {
+			await axios.get('/auth/logout')
+				.then((res) => {
+					this.router.push("/auth")
+				})
+				.catch((error) => {
+					console.error(error);
+				});
 		}
 
 	}
