@@ -73,7 +73,35 @@ export const useStoreBasic = defineStore('storeBasic', {
 				.catch((error) => {
 					console.error(error);
 				});
-		}
+		},
+		checkPassword(password) {
 
-	}
-})
+			const password_length = password.length
+			const format = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/
+				  
+			let contains_eight_characters = false
+
+			if (password_length > 8) {
+				contains_eight_characters = true
+			} 
+			else {
+				contains_eight_characters = false
+				  }
+				  
+			const contains_number = /\d/.test(password)
+			const contains_uppercase = /[A-Z]/.test(password)
+			const contains_special_character = format.test(password)
+			
+			if (contains_eight_characters === true &&
+						  contains_special_character === true &&
+						  contains_uppercase === true &&
+						  contains_number === true) {
+							  return true			
+			} 
+			else {
+			  return false
+			}
+		  }
+		}
+	  }
+)

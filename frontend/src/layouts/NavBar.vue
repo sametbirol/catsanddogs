@@ -10,10 +10,10 @@
           elevation="5"
   
         >
-          <v-app-bar-title>Purrpawlia</v-app-bar-title> 
+          <v-app-bar-title class="text-h4 font-weight-bold">Purrpawlia</v-app-bar-title> 
             <div class="link" >
               <v-btn
-                class="bg-orange-darken-1"
+                class="bg-orange-darken-1 text-uppercase"
                 to="/mainpage"
                 variant="plain"
               >
@@ -21,13 +21,13 @@
               <v-btn
                 
                 
-                class="bg-orange-darken-1"
+                class="bg-orange-darken-1 text-uppercase"
                 variant="plain"
                 @click="store.logout()"
               >
               Log Out </v-btn>
               <v-btn
-                class="bg-orange-darken-1"
+                class="bg-orange-darken-1 text-uppercase"
                 to="/profile"
                 variant="plain"
               >
