@@ -9,6 +9,18 @@ export const useStoreBasic = defineStore('storeBasic', {
 		return {
 			side: "Animal",
 			user: null,
+			pets: {
+				soldier1:{
+					name:'hanım',
+					id:'1',
+					power:10000,
+				},
+				soldier2:{
+					name:'pırpır',
+					id:'2',
+					power:98997,
+				}
+			},
 			router: useRouter()
 		}
 	},
@@ -21,11 +33,18 @@ export const useStoreBasic = defineStore('storeBasic', {
 		async init() {
 			await axios.get('/auth/')
 				.then((res) => {
-					this.user = res.data.user
-					if (res.data == false) {
-						this.router.push("/auth")
+					console.log("hello")
+					try{
+
+						this.user = res.data.user
+						this.router.push("/mainpage")
 					}
-					this.router.push("/mainpage")
+					catch(err){
+						
+						console.log(err)
+						this.logout()
+					}
+					
 				})
 				.catch((error) => {
 					console.error(error);

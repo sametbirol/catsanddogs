@@ -38,7 +38,13 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
 	const store = useStoreBasic()
 	
-	store.get_current_user_by_token()
+	try{
+		store.get_current_user_by_token()
+	}
+	catch(err) {
+		console.log(err)
+		store.logout()
+	}
 	try {
 		if (store.user && to.name === 'Auth') {
 			return { name: 'posts' }

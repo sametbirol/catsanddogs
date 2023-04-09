@@ -7,7 +7,7 @@ from database import SessionLocal, engine
 from passlib.context import CryptContext
 from fastapi.responses import HTMLResponse
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-from jose import jwt, JWTError
+from jose import jwt, JWTError,ExpiredSignatureError
 from datetime import datetime, timedelta
 
 
@@ -91,19 +91,21 @@ async def get_current_user(request: Request):
             # logout(request)
             return None
         return {"username": username, "id": user_id}
+    except ExpiredSignatureError:
+        return None
     except JWTError:
-        raise HTTPException(status_code=404, detail="Not Found")
+        return None
 
 
 @router.get("/")
 async def auth_main(request: Request, db: Session = Depends(get_db)):
     userr = await get_current_user(request)
     if userr is None:
-        return False
+        return None
     user = db.query(models.Users).filter(
         models.Users.id == userr.get("id")).first()
     if user is None:
-        return False
+        return None
     return {"user": user}
 
 
@@ -138,7 +140,7 @@ async def login_for_access_token(response: Response, form_data,
     user = authenticate_user(form_data.username, form_data.password, db)
     if not user:
         return False
-    token_expires = timedelta(minutes=60)
+    token_expires = timedelta(minutes=10)
     token = create_access_token(
         user.username, user.id, expires_delta=token_expires)
     response.set_cookie(key="access_token", value=token, httponly=True)
@@ -170,14 +172,18 @@ async def login_to_user(user: loguser, response: Response, db: Session = Depends
 @router.get("/logout")
 async def logout(request: Request, response: Response, db:Session = Depends(get_db)):
     msg = "Logout successful"
-    userr = await get_current_user(request)
-    user = db.query(models.Users).filter(models.Users.id == userr.get("id")).first()
-    user.is_active = False
-    db.add(user)
-    db.commit()
+    try:
+        userr = await get_current_user(request)
+        user = db.query(models.Users).filter(models.Users.id == userr.get("id")).first()
+        user.is_active = False
+        db.add(user)
+        db.commit()
+    finally:
+        response.delete_cookie(key="access_token")
+        return {"msg": msg}
+
     # response = templates.TemplateResponse("login.html", {"request": request, "msg": msg})
-    response.delete_cookie(key="access_token")
-    return {"msg": msg}
+
 
 # Exceptions
 
