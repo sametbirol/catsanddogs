@@ -13,12 +13,13 @@
                     </svg>
                 </v-btn>
             </v-row>
+            <v-form>
             <v-card ref="modalCardRef" class="w-100  h-100 ma-10">
 
 
                 <v-card-title class="bg-orange-darken-1 px-8 py-3 white-text">
                     <v-row>
-                        <v-col cols="11">Upload Post {{active_tab }}
+                        <v-col cols="11">Upload Post {{ active_tab }}
                         </v-col>
                         <v-col cols="1" justify="end">
                             <v-btn class="bg-orange" variant="tonal" :disabled="!previewImage" text @click="submitPost">Next
@@ -28,36 +29,46 @@
                 </v-card-title>
                 <v-row class="ma-10">
                     <v-col cols="12">
-                        
+
                         <v-btn class="bg-blue-accent-4" v-if="!previewImage" @click="onPickFile">Choose from
                             computer</v-btn>
                         <input type="file" accept="image/*" style="display: none" ref="fileInput" @change=uploadImage>
 
                     </v-col>
-                    <v-col  :cols="active_tab == 1 ? 12:8">
-                        
-                        
-                        <v-img :src="previewImage" class="uploading-image " max-width="500" aspect-ratio="1/1" />
+                    <v-col :cols="active_tab == 1 ? 12 : 8">
+
+
+                        <v-img :src="previewImage" class="uploading-image " max-width="500" aspect-ratio="1/1" @click="selected"></v-img>
 
                     </v-col>
+                    <v-divider vertical v-if="active_tab == 2"></v-divider>
                     <v-col v-if="active_tab == 2" cols="4">
+
                         <v-card>
-                
-                <v-card-text>
-                
-                Add Caption</v-card-text>
 
-                <v-textarea>
-                </v-textarea>
-                </v-card>
+
+
+                            <v-textarea placeholder="Add Caption" v-model="caption">
+                            </v-textarea>
+
+                            <v-expansion-panels>
+                                <v-expansion-panel>
+                                    <v-expansion-panel-text @click="selected">Pets</v-expansion-panel-text>
+                                    <v-radio-group v-model="petRef">
+                                        <v-radio v-for="pet in store.pets" :label="pet.name"  :value="pet.id"></v-radio>
+                                    </v-radio-group>
+                                </v-expansion-panel>
+                            </v-expansion-panels>
+                            {{ petRef }}
+                            asd
+                        </v-card>
                     </v-col>
-
                 </v-row>
-                
+
 
 
             </v-card>
-            
+            </v-form>
         </v-dialog>
     </v-row>
 </template>
@@ -68,11 +79,11 @@
 imports
 */
 // import { onClickOutside } from '@vueuse/core'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed,onMounted, onUnmounted } from 'vue'
 import { useStoreBasic } from '@/stores/storeBasic.js'
 // store
 const store = useStoreBasic()
-
+    
 /*
 props
 */
@@ -87,6 +98,8 @@ const props = defineProps({
     // }
 })
 /*refs*/
+const caption = ref(null)
+const petRef = ref(null)
 const imageRef = ref(null)
 const active_tab = ref(1)
 const previewImage = ref(null)
@@ -96,23 +109,22 @@ const fileInput = ref(null)
 */
 
 const emit = defineEmits(['update:modelValue'])
-const closeModal = async() => {
+const closeModal = async () => {
     emit('update:modelValue', false)
     free_up_variables()
-    
+
 }
 const free_up_variables = () => {
     setTimeout(() => {
         imageRef.value = null
-    active_tab.value = 1
-    previewImage.value = null
-    fileInput.value = null
+        active_tab.value = 1
+        previewImage.value = null
+        fileInput.value = null
     }, 200);
 }
 const submitPost = () => {
     active_tab.value += 1
 }
-
 const modalCardRef = ref(null)
 const onPickFile = () => {
     fileInput.value.click()
@@ -131,6 +143,10 @@ const uploadImage = (e) => {
     };
     imageRef.value = image
     // console.log(image.value)
+}
+const selected = () => {
+    console.log(petRef.value)
+
 }
 
 </script>
