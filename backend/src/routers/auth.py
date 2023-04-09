@@ -140,7 +140,7 @@ async def login_for_access_token(response: Response, form_data,
     user = authenticate_user(form_data.username, form_data.password, db)
     if not user:
         return False
-    token_expires = timedelta(minutes=10)
+    token_expires = timedelta(minutes=30)
     token = create_access_token(
         user.username, user.id, expires_delta=token_expires)
     response.set_cookie(key="access_token", value=token, httponly=True)
