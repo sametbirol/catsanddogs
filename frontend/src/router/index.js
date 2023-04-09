@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import ViewMainPage from '@/views/ViewMainPage.vue'
+// import ViewMainPage from '@/views/ViewMainPage.vue'
 import ViewAuth from '@/views/ViewAuth.vue'
-import ViewProfile from '@/views/ViewProfile.vue'
+// import ViewProfile from '@/views/ViewProfile.vue'
 import { useStoreBasic } from '@/stores/storeBasic.js'
 let store
 const routes = [
@@ -13,12 +13,20 @@ const routes = [
 	{
 		path: '/mainpage',
 		name: 'posts',
-		component: ViewMainPage
+		component: () => import(
+			/* webpackPrefetch: false */
+			/* webpackPreload: false */
+			'@/views/ViewMainPage.vue'
+		)
 	},
 	{
 		path: '/profile',
 		name: 'profile',
-		component: ViewProfile
+		component: () => import(
+			/* webpackPrefetch: false */
+			/* webpackPreload: false */
+			'@/views/ViewProfile.vue'
+		)
 	}
 ]
 
@@ -38,9 +46,6 @@ router.beforeEach(async (to, from) => {
 		if (!store.user && to.name !== 'Auth') {
 			return false
 		}
-		// if(to.name !== 'Auth' || to.name !== 'posts' || to.name !== 'profile' ){
-		// 	return { name: 'Auth' }
-		// }
 	}
 	catch(err) {
 		console.log(err)

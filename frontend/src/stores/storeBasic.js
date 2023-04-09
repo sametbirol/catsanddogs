@@ -43,9 +43,9 @@ export const useStoreBasic = defineStore('storeBasic', {
 					console.error(error);
 				});
 		},
-		createUser(data) {
+		async createUser(data) {
 			data.side = this.side
-			axios.post('auth/register', data, {
+			await axios.post('auth/register', data, {
 				headers: {
 					'Content-Type': 'application/json'
 				}
@@ -56,11 +56,13 @@ export const useStoreBasic = defineStore('storeBasic', {
 				})
 		},
 		async loginUser(data) {
-			await axios.post('auth/login', data, {
+			let loginform = { "username": data.username, "password": data.password }
+			await axios.post('auth/login', loginform, {
 				headers: {
 					'Content-Type': 'application/json'
 				}
 			}).then(res => {
+				console.log(res)
 				this.init()
 			}
 			)

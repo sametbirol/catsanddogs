@@ -10,7 +10,7 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
-            <p>Sign in with your username and password:{{ store.msg }}</p>
+            <p>Sign in with your username and password</p>
             <v-form id="myInput" v-autofocus>
                 <v-text-field outline label="Username" type="text" v-model="credential.username" v-autofocus></v-text-field>
                 <v-text-field outline hide-details label="Password" type="password"
@@ -39,8 +39,8 @@ const store = useStoreBasic()
   credential
 */
 const credential = reactive({
-    username: '',
-    password: '',
+    username: "",
+    password: "",
 })
 /*  
   submit
@@ -50,6 +50,7 @@ const onsubmit = () => {
         alert('Please enter your email and password')
     }
     else {
+        console.log("credential:",credential)
         store.loginUser(credential)
     }
 }
