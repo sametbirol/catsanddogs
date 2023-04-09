@@ -1,25 +1,67 @@
 <template>
     <v-row justify="center">
-        <v-dialog v-model="props.modelValue" class="w-75  slide-in-bck-center" height="auto" >
-            <v-card ref="modalCardRef">
+        <v-dialog v-model="props.modelValue" class="h-screen w-50" persistent>
+            <v-row justify="end" class="w-100 h-100 ma-15">
+                <v-btn color="rgba(255, 255, 255, 0" @click="closeModal" flat>
+                    <svg aria-label="Kapat" class="x1lliihq x1n2onr6" color="rgb(255, 255, 255)" fill="rgb(255, 255, 255)"
+                        height="18" role="img" viewBox="0 0 24 24" width="18">
+                        <title>Kapat</title>
+                        <polyline fill="none" points="20.643 3.357 12 12 3.353 20.647" stroke="currentColor"
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></polyline>
+                        <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="3" x1="20.649" x2="3.354" y1="20.649" y2="3.354"></line>
+                    </svg>
+                </v-btn>
+            </v-row>
+            <v-card ref="modalCardRef" class="w-100  h-100 ma-10">
 
 
-                <v-card-title class="text-h4  ">
-                    Upload photo
+                <v-card-title class="bg-orange-darken-1 px-8 py-3 white-text">
+                    <v-row>
+                        <v-col cols="11">Upload Post {{active_tab }}
+                        </v-col>
+                        <v-col cols="1" justify="end">
+                            <v-btn class="bg-orange" variant="tonal" :disabled="!previewImage" text @click="submitPost">Next
+                            </v-btn>
+                        </v-col>
+                    </v-row>
                 </v-card-title>
+                <v-row class="ma-10">
+                    <v-col cols="12">
+                        
+                        <v-btn class="bg-blue-accent-4" v-if="!previewImage" @click="onPickFile">Choose from
+                            computer</v-btn>
+                        <input type="file" accept="image/*" style="display: none" ref="fileInput" @change=uploadImage>
 
-                <div>
-                    <img :src="previewImage" class="uploading-image w-50" />
-                    <v-btn class="bg-blue-accent-5" @click="onPickFile">Pick an image</v-btn>
-                    <input type="file" accept="image/*" style="display: none"  ref="fileInput" @change=uploadImage>
-                </div>
+                    </v-col>
+                    <v-col  :cols="active_tab == 1 ? 12:8">
+                        
+                        
+                        <v-img :src="previewImage" class="uploading-image " max-width="500" aspect-ratio="1/1" />
+
+                    </v-col>
+                    <v-col v-if="active_tab == 2" cols="4">
+                        <v-card>
+                
+                <v-card-text>
+                
+                Add Caption</v-card-text>
+
+                <v-textarea>
+                </v-textarea>
+                </v-card>
+                    </v-col>
+
+                </v-row>
+                
 
 
             </v-card>
-
+            
         </v-dialog>
     </v-row>
 </template>
+// 
   
 <script setup>
 /*
@@ -45,7 +87,8 @@ const props = defineProps({
     // }
 })
 /*refs*/
-const image = ref(null)
+const imageRef = ref(null)
+const active_tab = ref(1)
 const previewImage = ref(null)
 const fileInput = ref(null)
 /*
@@ -53,9 +96,21 @@ const fileInput = ref(null)
 */
 
 const emit = defineEmits(['update:modelValue'])
-
-const closeModal = (side) => {
+const closeModal = async() => {
     emit('update:modelValue', false)
+    free_up_variables()
+    
+}
+const free_up_variables = () => {
+    setTimeout(() => {
+        imageRef.value = null
+    active_tab.value = 1
+    previewImage.value = null
+    fileInput.value = null
+    }, 200);
+}
+const submitPost = () => {
+    active_tab.value += 1
 }
 
 const modalCardRef = ref(null)
@@ -63,31 +118,28 @@ const onPickFile = () => {
     fileInput.value.click()
 }
 const uploadImage = (e) => {
-                const image = e.target.files[0];
-                const filename = image.name
-                console.log("filename: ",filename)
-                if(filename.lastIndexOf('.') <= 0){
-                    return alert('Please add a valid file!')
-                }
-                const reader = new FileReader();
-                reader.readAsDataURL(image);
-                reader.onload = e =>{
-                    previewImage.value = e.target.result;
-                    console.log(previewImage.value);
-                };
-                image.value = image
-                console.log(image.value)
-            }
+    const image = e.target.files[0];
+    const filename = image.name
+    if (filename.lastIndexOf('.') <= 0) {
+        return alert('Please add a valid file!')
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onload = e => {
+        previewImage.value = e.target.result;
+        // console.log(previewImage.value);
+    };
+    imageRef.value = image
+    // console.log(image.value)
+}
 
 </script>
 <style>
+/* .slide-in-bck-center {
+    animation: slide-in-bck-center 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) forwards;
+} */
 
-.slide-in-bck-center {
-    animation: slide-in-bck-center 2s cubic-bezier(0.550, 0.085, 0.680, 0.530) forwards;
+.uploading-image {
+    display: flex;
 }
-
-.uploading-image{
-     display:flex;
-}
-
 </style>
