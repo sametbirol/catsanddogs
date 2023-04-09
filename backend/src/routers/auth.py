@@ -168,8 +168,13 @@ async def login_to_user(user: loguser, response: Response, db: Session = Depends
 
 
 @router.get("/logout")
-async def logout(request: Request, response: Response):
+async def logout(request: Request, response: Response, db:Session = Depends(get_db)):
     msg = "Logout successful"
+    userr = await get_current_user(request)
+    user = db.query(models.Users).filter(models.Users.id == userr.get("id")).first()
+    user.is_active = False
+    db.add(user)
+    db.commit()
     # response = templates.TemplateResponse("login.html", {"request": request, "msg": msg})
     response.delete_cookie(key="access_token")
     return {"msg": msg}

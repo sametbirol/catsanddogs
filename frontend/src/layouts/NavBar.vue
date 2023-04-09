@@ -16,6 +16,7 @@
                 class="bg-orange-darken-1 text-uppercase"
                 to="/mainpage"
                 variant="plain"
+                v-if="store.user"
               >
               Posts </v-btn>
               <v-btn
@@ -24,12 +25,14 @@
                 class="bg-orange-darken-1 text-uppercase"
                 variant="plain"
                 @click="store.logout()"
+                v-if="store.user"
               >
               Log Out </v-btn>
               <v-btn
                 class="bg-orange-darken-1 text-uppercase"
                 to="/profile"
                 variant="plain"
+                v-if="store.user"
               >
               Profile</v-btn>
             </div>       

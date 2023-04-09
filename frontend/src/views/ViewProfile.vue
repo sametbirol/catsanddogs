@@ -32,7 +32,8 @@
                 {{soldier.name}}
                 {{soldier.power}}</v-card>
             </v-col></v-row>
-        
+            <v-btn class="bg-blue-accent-3" @click="upload_image">Upload</v-btn>
+        <uploadphoto v-model="modals.upload" ></uploadphoto>
 
     </v-card>
     
@@ -41,6 +42,15 @@
 </template>
 <script setup>
 import { reactive} from 'vue'
+import uploadphoto from '@/modals/uploadphoto.vue';
+
+const modals = reactive({
+    upload: false,
+
+})
+const upload_image= () => {
+    modals.upload = true
+}
 
 const soldiers = reactive({
     soldier1:{
