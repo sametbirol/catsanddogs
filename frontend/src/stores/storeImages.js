@@ -5,6 +5,7 @@ import { useStoreBasic } from './storeBasic'
 import axios from 'axios'
 import { ref } from 'vue'
 
+
 import { useRouter } from 'vue-router'
 
 export const useStoreImage = defineStore('storeImage', {
@@ -21,7 +22,9 @@ export const useStoreImage = defineStore('storeImage', {
             storeBasic: useStoreBasic()
         }
     },
+     getters: {
 
+    },
     actions: {
         async downloadImageURL() {
             this.urlDict = new Map()
@@ -33,6 +36,10 @@ export const useStoreImage = defineStore('storeImage', {
                   this.urlDict.set(x.reference,imgURL.toString())
                 })
             })
+
+   
+
+
         },
         async createUniqueImageRef(user_id, pet_id, file, caption) {
             user_id = user_id.toString()
@@ -40,6 +47,7 @@ export const useStoreImage = defineStore('storeImage', {
             const timestamp = Date.now().toString()
             const reference = 'pets/' + user_id + '_' + pet_id + '_' + timestamp
             const ImageRef = storageRef(storage, reference)
+
             let postform = {
                 "timestamp": timestamp,
                 "reference": reference,
@@ -49,7 +57,6 @@ export const useStoreImage = defineStore('storeImage', {
             console.log(postform)
             this.createPost(postform).then(async() => {
                 await uploadBytes(ImageRef, file).then((snapshot) => {
-                    console.log('Uploaded a blob or file! =>', snapshot);
                 })
             })
             
@@ -96,7 +103,6 @@ export const useStoreImage = defineStore('storeImage', {
                     'Content-Type': 'application/json'
                 }
             }).then(res => {
-                console.log(res)
                 this.storeBasic.get_current_user_by_token()
             }
             )
@@ -133,6 +139,7 @@ export const useStoreImage = defineStore('storeImage', {
             await this.get_pets()
             await this.get_follows()
             await this.downloadImageURL()
+
         },
         
     }

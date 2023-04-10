@@ -57,11 +57,7 @@ const petFiltered = computed(() => {
 		return storeImage.pets.filter(x => x.id == petID)[0]
 	}
 })
-// const url = computed(() => {
-// 	return (postRef) => {
-// 		return storeImage.downloadImageURL(postRef)
-// 	}
-// })
+
 const followsFiltered = computed(() => {
 	return (petID) => {
 		return storeImage.follows.filter(x => x.pet_id == petID)
@@ -72,7 +68,6 @@ const modals = reactive({
 
 })
 const upload_image= () => {
-	console.log(storeImage.urlDict)
     modals.upload = true
 }
 </script>

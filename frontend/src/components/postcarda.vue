@@ -106,13 +106,15 @@ const props = defineProps({
 	},
 	url: {
 		default : null
-	}
+}
+
 })
 const commentsView = ref(false)
 const liked = ref(false)
 const followed = ref(false)
 const likeStatusChange = () => {
 	liked.value = !liked.value
+
 	storeImage.get_likes()//replace by post methods, personally prefer passing liked.value to axios.post data for a parameter to either add or delete
 }
 const followStatusChange = () => {
