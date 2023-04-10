@@ -26,7 +26,7 @@
 		:likes="likesFiltered(post.id)"
 		:pet="petFiltered(post.pet_id)"
 		:follows="followsFiltered(post.pet_id)"
-		:url="url(post)"
+		:url="storeImage.urlDict.get(post.reference)"
 		class="mb-15"/>
 	</v-container>
 
@@ -41,6 +41,7 @@ import { useStoreBasic } from '@/stores/storeBasic';
 import { computed,reactive} from 'vue';
 const storeBasic = useStoreBasic()
 const storeImage = useStoreImage()
+/* computed */
 const commentsFiltered = computed(() => {
 	return (postID) => {
 		return storeImage.comments.filter(x => x.post_id == postID)
@@ -56,11 +57,7 @@ const petFiltered = computed(() => {
 		return storeImage.pets.filter(x => x.id == petID)[0]
 	}
 })
-const url = computed(() => {
-	return async(post) => {
-		return await storeImage.downloadImageURL(post)
-	}
-})
+
 const followsFiltered = computed(() => {
 	return (petID) => {
 		return storeImage.follows.filter(x => x.pet_id == petID)

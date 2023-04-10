@@ -17,21 +17,11 @@
         </v-img>
         <v-container>
             <v-row class="flex-row">
-                <v-btn variant="plain">About </v-btn>
-                <v-btn variant="plain">About</v-btn>
+                <v-btn variant="plain">pets </v-btn>
+                <v-btn variant="plain">posts</v-btn>
                 <v-btn variant="plain">About</v-btn>
             </v-row>
         </v-container>
-            <!-- <v-row class="flex-row">
-                <v-col cols="6"
-                v-for="soldier in soldiers" :key="soldier">
-                <v-card
-                >
-                <v-avatar image="@/assets/1/hanım.jpeg"></v-avatar> 
-
-                {{soldier.name}}
-                {{soldier.power}}</v-card>
-            </v-col></v-row> -->
             <PostCard 
 		v-for="post in storeImage.posts.filter(x => x.owner_id == storeBasic.user.id)"
 		:key="post.id"
