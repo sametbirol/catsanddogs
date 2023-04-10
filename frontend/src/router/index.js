@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-// import ViewMainPage from '@/views/ViewMainPage.vue'
+import ViewMainPage from '@/views/ViewMainPage.vue'
 import ViewAuth from '@/views/ViewAuth.vue'
-// import ViewProfile from '@/views/ViewProfile.vue'
+import ViewProfile from '@/views/ViewProfile.vue'
 import { useStoreBasic } from '@/stores/storeBasic.js'
 import { useStoreImage } from "@/stores/storeImages";
 let storeBasic
@@ -15,20 +15,12 @@ const routes = [
 	{
 		path: '/mainpage',
 		name: 'posts',
-		component: () => import(
-			/* webpackPrefetch: false */
-			/* webpackPreload: false */
-			'@/views/ViewMainPage.vue'
-		)
+		component: ViewMainPage
 	},
 	{
 		path: '/profile',
 		name: 'profile',
-		component: () => import(
-			/* webpackPrefetch: false */
-			/* webpackPreload: false */
-			'@/views/ViewProfile.vue'
-		)
+		component: ViewProfile
 	}
 ]
 
