@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { useStoreImage } from './storeImages'
+
 
 
 export const useStoreBasic = defineStore('storeBasic', {
@@ -21,7 +23,8 @@ export const useStoreBasic = defineStore('storeBasic', {
 					power:98997,
 				}
 			},
-			router: useRouter()
+			router: useRouter(),
+			storeImage : useStoreImage()
 		}
 	},
 
@@ -33,7 +36,6 @@ export const useStoreBasic = defineStore('storeBasic', {
 		async init() {
 			await axios.get('/auth/')
 				.then((res) => {
-					console.log("hello")
 					try{
 
 						this.user = res.data.user
@@ -54,12 +56,12 @@ export const useStoreBasic = defineStore('storeBasic', {
 			await axios.get('/auth/')
 				.then((res) => {
 					this.user = res.data.user
-					if (res.data == false) {
-						this.router.push("/auth")
+					if (res.data.user == null ) {
+						this.logout()
 					}
 				})
 				.catch((error) => {
-					console.error(error);
+					this.logout()
 				});
 		},
 		async createUser(data) {
@@ -81,7 +83,6 @@ export const useStoreBasic = defineStore('storeBasic', {
 					'Content-Type': 'application/json'
 				}
 			}).then(res => {
-				console.log(res)
 				this.init()
 			}
 			)

@@ -39,12 +39,11 @@ class Posts(Base):
     __tablename__ = 'posts'
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(255))
-    text = Column(String)
-    images = Column(LargeBinary)
+    reference = Column(String(100))
+    text = Column(String(255))
     owner_id = Column(Integer, ForeignKey("users.id"))
     pet_id = Column(Integer, ForeignKey("pets.id"))
-    timestamp = Column(DateTime)
+    timestamp = Column(String(100))
 
     owner = relationship("Users", back_populates="posts")
     pet = relationship("Pets", back_populates="postslist")
