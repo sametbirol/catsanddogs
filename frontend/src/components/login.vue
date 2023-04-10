@@ -50,7 +50,6 @@ const onsubmit = () => {
         alert('Please enter your email and password')
     }
     else {
-        console.log("credential:",credential)
         store.loginUser(credential)
     }
 }

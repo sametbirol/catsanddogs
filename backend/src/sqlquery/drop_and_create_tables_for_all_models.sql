@@ -20,7 +20,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE pets (
-    id INTEGER NOT NULL,
+    id SERIAL NOT NULL,
     name VARCHAR(50),
     species VARCHAR(50),
     owner_id INTEGER,
@@ -29,20 +29,19 @@ CREATE TABLE pets (
 );
 
 CREATE TABLE posts (
-    id INTEGER NOT NULL,
-    title VARCHAR(255),
-    text VARCHAR,
-    images BYTEA,
+    id SERIAL NOT NULL,
+    reference VARCHAR(100),
+    text VARCHAR(255),
     owner_id INTEGER,
     pet_id INTEGER,
-    timestamp TIMESTAMP,
+    timestamp VARCHAR(100),
     PRIMARY KEY (id),
     FOREIGN KEY(owner_id) REFERENCES users (id),
     FOREIGN KEY(pet_id) REFERENCES pets (id)
 );
 
 CREATE TABLE likes (
-    id INTEGER NOT NULL,
+    id SERIAL NOT NULL,
     user_id INTEGER,
     post_id INTEGER,
     pet_id INTEGER,
@@ -61,7 +60,7 @@ CREATE TABLE follows (
 );
 
 CREATE TABLE comments (
-    comment_id INTEGER NOT NULL,
+    comment_id SERIAL NOT NULL,
     user_id INTEGER,
     post_id INTEGER,
     comment VARCHAR,

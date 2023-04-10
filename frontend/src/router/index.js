@@ -3,11 +3,13 @@ import { createRouter, createWebHistory } from "vue-router";
 import ViewAuth from '@/views/ViewAuth.vue'
 // import ViewProfile from '@/views/ViewProfile.vue'
 import { useStoreBasic } from '@/stores/storeBasic.js'
-let store
+import { useStoreImage } from "@/stores/storeImages";
+let storeBasic
+let storeImage
 const routes = [
 	{
 		path: '/auth',
-		name: 'Auth',
+		name: 'auth',
 		component: ViewAuth
 	},
 	{
@@ -36,21 +38,25 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
-	const store = useStoreBasic()
+	const storeBasic = useStoreBasic()
+	const storeImage = useStoreImage()
 	
 	try{
-		store.get_current_user_by_token()
+		storeBasic.get_current_user_by_token()
 	}
 	catch(err) {
-		console.log(err)
-		store.logout()
+		storeBasic.logout()
 	}
 	try {
-		if (store.user && to.name === 'Auth') {
+		if (storeBasic.user && to.name === 'auth') {
+			storeImage.init()
 			return { name: 'posts' }
 		}
-		if (!store.user && to.name !== 'Auth') {
+		if (!storeBasic.user && to.name !== 'auth') {
 			return false
+		}
+		if (storeImage.posts == null && storeBasic.user) {
+			storeImage.init()
 		}
 	}
 	catch(err) {

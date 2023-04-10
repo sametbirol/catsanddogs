@@ -22,47 +22,77 @@
                 <v-btn variant="plain">About</v-btn>
             </v-row>
         </v-container>
-            <v-row class="flex-row">
+            <!-- <v-row class="flex-row">
                 <v-col cols="6"
                 v-for="soldier in soldiers" :key="soldier">
                 <v-card
                 >
-                <v-avatar image="@/assets/1/hanım.jpeg"></v-avatar> <!-- profile picture of each soldier is hardcoded as hanım, need update-->
+                <v-avatar image="@/assets/1/hanım.jpeg"></v-avatar> 
 
                 {{soldier.name}}
                 {{soldier.power}}</v-card>
-            </v-col></v-row>
-            <v-btn class="bg-blue-accent-3" @click="upload_image">Upload</v-btn>
-        <uploadphoto v-model="modals.upload" ></uploadphoto>
-
+            </v-col></v-row> -->
+            <PostCard 
+		v-for="post in storeImage.posts.filter(x => x.owner_id == storeBasic.user.id)"
+		:key="post.id"
+		:post="post" 
+		:comments="commentsFiltered(post.id)"
+		:likes="likesFiltered(post.id)"
+		:pet="petFiltered(post.pet_id)"
+		:follows="followsFiltered(post.pet_id)"
+		class="mb-15">
+        </PostCard>
     </v-card>
     
     </v-container>
 
 </template>
 <script setup>
-import { reactive} from 'vue'
-import uploadphoto from '@/modals/uploadphoto.vue';
+import PostCard from '@/components/postcarda.vue'
+import { reactive,computed} from 'vue'
+import { useStoreBasic } from '@/stores/storeBasic';
+import { useStoreImage } from '@/stores/storeImages';
+const storeBasic = useStoreBasic()
+const storeImage = useStoreImage()
 
-const modals = reactive({
-    upload: false,
 
+
+
+// const soldiers = reactive({
+//     soldier1:{
+//         name:'hanım',
+//         id:'1',
+//         power:10000,
+//     },
+//     soldier2:{
+//         name:'pırpır',
+//         id:'2',
+//         power:98997,
+//     }
+// })
+const postsFiltered = computed(() => {
+	return (postID, storeBasic) => {
+		return storeImage.posts.filter(x => x.owner_id == storeBasic.user.id)
+	}
 })
-const upload_image= () => {
-    modals.upload = true
-}
-
-const soldiers = reactive({
-    soldier1:{
-        name:'hanım',
-        id:'1',
-        power:10000,
-    },
-    soldier2:{
-        name:'pırpır',
-        id:'2',
-        power:98997,
-    }
+const commentsFiltered = computed(() => {
+	return (postID) => {
+		return storeImage.comments.filter(x => x.post_id == postID)
+	}
 })
-
+const likesFiltered = computed(() => {
+	return (postID) => {
+		return storeImage.likes.filter(x => x.post_id == postID)
+	}
+})
+const petFiltered = computed(() => {
+	return (petID) => {
+		return storeImage.pets.filter(x => x.id == petID)[0]
+	}
+})
+const followsFiltered = computed(() => {
+	return (petID) => {
+		return storeImage.follows.filter(x => x.pet_id == petID)
+	}
+})
 </script>

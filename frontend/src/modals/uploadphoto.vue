@@ -39,7 +39,7 @@
 
 
                         <v-img :src="previewImage" class="uploading-image " max-width="500" aspect-ratio="1/1" @click="selected"></v-img>
-
+                        {{ petsFiltered(storeBasic.user.id) }}
                     </v-col>
                     <v-divider vertical v-if="active_tab == 2"></v-divider>
                     <v-col v-if="active_tab == 2" cols="4">
@@ -55,12 +55,10 @@
                                 <v-expansion-panel>
                                     <v-expansion-panel-text @click="selected">Pets</v-expansion-panel-text>
                                     <v-radio-group v-model="petRef">
-                                        <v-radio v-for="pet in store.pets" :label="pet.name"  :value="pet.id"></v-radio>
+                                        <v-radio v-for="pet in petsFiltered(storeBasic.user.id)" :label="pet.name"  :value="pet.id"></v-radio>
                                     </v-radio-group>
                                 </v-expansion-panel>
                             </v-expansion-panels>
-                            {{ petRef }}
-                            asd
                         </v-card>
                     </v-col>
                 </v-row>
@@ -81,8 +79,10 @@ imports
 // import { onClickOutside } from '@vueuse/core'
 import { ref, computed,onMounted, onUnmounted } from 'vue'
 import { useStoreBasic } from '@/stores/storeBasic.js'
+import { useStoreImage } from '@/stores/storeImages';
 // store
-const store = useStoreBasic()
+const storeBasic = useStoreBasic()
+const storeImage =useStoreImage()
     
 /*
 props
@@ -124,6 +124,9 @@ const free_up_variables = () => {
 }
 const submitPost = () => {
     active_tab.value += 1
+    if(active_tab.value >= 3){
+        storeImage.createUniqueImageRef(storeBasic.user.id, petRef.value, imageRef.value, caption.value)
+    }
 }
 const modalCardRef = ref(null)
 const onPickFile = () => {
@@ -148,6 +151,11 @@ const selected = () => {
     console.log(petRef.value)
 
 }
+const petsFiltered = computed(() => {
+	return (userID) => {
+		return storeImage.pets.filter(x => x.owner_id == userID)
+	}
+})
 
 </script>
 <style>

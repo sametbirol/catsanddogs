@@ -1,6 +1,6 @@
 from fastapi import FastAPI,Depends
 from database import engine
-from routers import auth
+from routers import auth,posts
 import models
 from fastapi.middleware.cors import CORSMiddleware  # NEW
 
@@ -18,3 +18,4 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
+app.include_router(posts.router)

@@ -7,7 +7,7 @@ from database import SessionLocal, engine
 from passlib.context import CryptContext
 from fastapi.responses import HTMLResponse
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-from jose import jwt, JWTError,ExpiredSignatureError
+from jose import jwt, JWTError, ExpiredSignatureError
 from datetime import datetime, timedelta
 
 
@@ -101,11 +101,11 @@ async def get_current_user(request: Request):
 async def auth_main(request: Request, db: Session = Depends(get_db)):
     userr = await get_current_user(request)
     if userr is None:
-        return None
+        return {"user": userr}
     user = db.query(models.Users).filter(
         models.Users.id == userr.get("id")).first()
     if user is None:
-        return None
+        return {"user": user}
     return {"user": user}
 
 
