@@ -21,14 +21,17 @@ router = APIRouter(
     responses={401: {"user": "Not authenticated"}}
 )
 
+
 class postModel(BaseModel):
     timestamp: str
     reference: str
     text: str
     pet_id: int
 
+
 class postToDelete(BaseModel):
     id: int
+
 
 def get_db():
     try:
@@ -38,34 +41,44 @@ def get_db():
         db.close()
 
 
-
 @router.get('/')
-async def get_all_posts(db:Session = Depends(get_db)):
+async def get_all_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Posts).all()
     return {"posts": posts}
 
+
 @router.get('/comments')
-async def get_all_comments(db:Session = Depends(get_db)):
+async def get_all_comments(db: Session = Depends(get_db)):
     comments = db.query(models.Comments).all()
     return {"comments": comments}
 
+
 @router.get('/likes')
-async def get_all_likes(db:Session = Depends(get_db)):
+async def get_all_likes(db: Session = Depends(get_db)):
     likes = db.query(models.Likes).all()
     return {"likes": likes}
 
+
 @router.get('/pets')
-async def get_all_pets(db:Session = Depends(get_db)):
+async def get_all_pets(db: Session = Depends(get_db)):
     pets = db.query(models.Pets).all()
     return {"pets": pets}
 
+
 @router.get('/follows')
-async def get_all_follows(db:Session = Depends(get_db)):
+async def get_all_follows(db: Session = Depends(get_db)):
     follows = db.query(models.Follows).all()
     return {"follows": follows}
 
+
+@router.get('/users')
+async def get_all_users(db: Session = Depends(get_db)):
+    users = db.query(models.Users).all()
+    return {"users": users}
+
+
 @router.post('/')
-async def new_post(request:Request,post:postModel,db:Session = Depends(get_db)):
+async def new_post(request: Request, post: postModel, db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return {"msg": "Authentication error"}
@@ -77,10 +90,11 @@ async def new_post(request:Request,post:postModel,db:Session = Depends(get_db)):
     post_model.owner_id = user.get("id")
     db.add(post_model)
     db.commit()
-    return {"msg": "succesfully created","post":post,"user":user}
-    
+    return {"msg": "succesfully created", "post": post, "user": user}
+
+
 @router.post('/post/delete')
-async def delete_post(post: postToDelete,request:Request,db:Session = Depends(get_db)):
+async def delete_post(post: postToDelete, request: Request, db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return False
@@ -91,4 +105,3 @@ async def delete_post(post: postToDelete,request:Request,db:Session = Depends(ge
     db.delete(post)
     db.commit()
     return True
-
