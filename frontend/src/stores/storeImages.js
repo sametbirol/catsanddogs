@@ -1,11 +1,9 @@
 import { defineStore } from 'pinia'
 import { storage } from '@/firebasejs/firebase'
-import { ref as storageRef, uploadBytes, deleteObject ,getDownloadURL} from "firebase/storage"
+import { ref as storageRef, uploadBytes, deleteObject, getDownloadURL } from "firebase/storage"
 import { useStoreBasic } from './storeBasic'
 import axios from 'axios'
 import { ref } from 'vue'
-
-
 import { useRouter } from 'vue-router'
 
 export const useStoreImage = defineStore('storeImage', {
@@ -13,17 +11,15 @@ export const useStoreImage = defineStore('storeImage', {
     state: () => {
         return {
             posts: null,
-            comments:null,
-            likes:null,
-            pets:null,
-            follows:null,
-            urlDict:new Map(),
+            comments: null,
+            likes: null,
+            pets: null,
+            follows: null,
+            users: null,
+            urlDict: null,
             router: useRouter(),
             storeBasic: useStoreBasic()
         }
-    },
-     getters: {
-
     },
     actions: {
         async downloadImageURL() {
@@ -32,14 +28,9 @@ export const useStoreImage = defineStore('storeImage', {
             const reference =  storageRef(storage,x.reference)
             getDownloadURL(reference)
                 .then(imgURL => {
-                  // use Vue.set for reactivity
-                  this.urlDict.set(x.reference,imgURL.toString())
+                  this.urlDict.set(x.reference,imgURL)
                 })
             })
-
-   
-
-
         },
         async createUniqueImageRef(user_id, pet_id, file, caption) {
             user_id = user_id.toString()
@@ -55,11 +46,12 @@ export const useStoreImage = defineStore('storeImage', {
                 "pet_id": pet_id
             }
             console.log(postform)
-            this.createPost(postform).then(async() => {
+            this.createPost(postform).then(async () => {
                 await uploadBytes(ImageRef, file).then((snapshot) => {
+                    console.log('Uploaded a blob or file! =>', snapshot);
                 })
-            })
-            
+            }).then(x => this.storeBasic.init())
+
         },
         async deleteImagesbyRef(postData) {
             this.deletePost(postData).then((res) => {
@@ -107,27 +99,32 @@ export const useStoreImage = defineStore('storeImage', {
             }
             )
         },
-        async get_posts(){
+        async get_posts() {
             await axios.get('/post/').then((res) => {
                 this.posts = res.data.posts
             })
         },
-        async get_likes(){
+        async get_likes() {
             await axios.get('/post/likes').then((res) => {
                 this.likes = res.data.likes
             })
         },
-        async get_comments(){
+        async get_comments() {
             await axios.get('/post/comments').then((res) => {
                 this.comments = res.data.comments
             })
         },
-        async get_pets(){
+        async get_users() {
+            await axios.get('/post/users').then((res) => {
+                this.users = res.data.users
+            })
+        },
+        async get_pets() {
             await axios.get('/post/pets').then((res) => {
                 this.pets = res.data.pets
             })
         },
-        async get_follows(){
+        async get_follows() {
             await axios.get('/post/follows').then((res) => {
                 this.follows = res.data.follows
             })
@@ -139,11 +136,6 @@ export const useStoreImage = defineStore('storeImage', {
             await this.get_pets()
             await this.get_follows()
             await this.downloadImageURL()
-
+            await this.get_users()
         },
-        
-    }
-
-}
-
-)
+  }})

@@ -15,12 +15,16 @@ const routes = [
 	{
 		path: '/mainpage',
 		name: 'posts',
-		component: ViewMainPage
+		component: () =>
+			import('@/views/ViewMainPage.vue')
+
 	},
 	{
 		path: '/profile',
 		name: 'profile',
-		component: ViewProfile
+		component: () =>
+			import('@/views/ViewProfile.vue')
+
 	}
 ]
 
@@ -32,11 +36,11 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
 	const storeBasic = useStoreBasic()
 	const storeImage = useStoreImage()
-	
-	try{
+	try {
 		storeBasic.get_current_user_by_token()
 	}
-	catch(err) {
+	catch (err) {
+
 		storeBasic.logout()
 	}
 	try {
@@ -51,7 +55,7 @@ router.beforeEach(async (to, from) => {
 			storeImage.init()
 		}
 	}
-	catch(err) {
+	catch (err) {
 		console.log(err)
 	}
 })

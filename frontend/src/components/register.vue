@@ -66,7 +66,7 @@
 <script setup>
 import { ref, computed, reactive, watch, onBeforeMount, onBeforeUnmount } from 'vue'
 import pickyoursideModal from '@/modals/pickyourside.vue'
-import passwordmodal from '@/modals/passwordmodal.vue';
+import passwordmodal from '@/modals/CloseVerifyModal.vue';
 import { useStoreBasic } from '@/stores/storeBasic.js'
 import { useRouter } from 'vue-router';
 // router
@@ -97,8 +97,8 @@ const isActive_signup = computed(() => {
     return credential.email && credential.password && credential.username && credential.first_name && credential.last_name && password_match.value && store.checkPassword(credential.password)
 })
 const password_match = computed(() => {
-    if(credential.password === credential.verify_password ){
-        if (credential.password == ''){
+    if (credential.password === credential.verify_password) {
+        if (credential.password == '') {
             return false
         }
         return true
@@ -122,21 +122,19 @@ const format = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/
 const userTyping = ref(null)
 let typingnow = setTimeout(() => {
     userTyping.value = false;
-    console.log("user typed")
-  }, 2000);
+}, 2000);
 watch(() => userTyping.value, (newValue) => {
-    if(newValue == false){
+    if (newValue == false) {
         verify_password_match.value = credential.password === credential.verify_password
         // clearTimeout(typingnow)
-        console.log("verify_password_match.value: ",verify_password_match.value)
+        console.log("verify_password_match.value: ", verify_password_match.value)
     }
-    else if(newValue == true){
+    else if (newValue == true) {
         verify_password_match.value = null
     }
 })
 watch(() => credential.verify_password, (newValue) => {
     userTyping.value = true;
-    console.log("user typing")
     typingnow
 })
 //pick
