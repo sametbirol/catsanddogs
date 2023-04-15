@@ -6,8 +6,7 @@
 
 			<v-col cols="12">
 				<div>
-
-					<!-- Username: "{{ storeBasic.user["username"] }}"
+					Username: "{{ storeBasic.user["username"] }}"
 					<v-divider thickness="8"></v-divider>
 					{{ storeImage.posts[0] }} (first)
 					<v-divider thickness="8"></v-divider>
@@ -19,7 +18,7 @@
 					<v-divider thickness="8"></v-divider>
 					{{ storeImage.follows[0] }} (first)
 					<v-divider thickness="8"></v-divider>
-					urlDict.size(also postNumber) : {{ storeImage.urlDict.size }} -->
+					urlDict.size(also postNumber) : {{ storeImage.urlDict.size }}
 				</div>
 			</v-col>
 		</v-row>
@@ -103,9 +102,7 @@ const modals = reactive({
 
 })
 const upload_image = () => {
-	// console.log(storeImage.urlDict)
 	modals.upload = true
-	console.log(storeBasic.user)
 }
 </script>
 

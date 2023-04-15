@@ -22,24 +22,8 @@
             <PostCard v-for="post in storeImage.posts.filter(x => x.owner_id == storeBasic.user.id)" :key="post.id"
                 :post="post" :comments="commentsFiltered(post.id)" :likes="likesFiltered(post.id)"
                 :pet="petFiltered(post.pet_id)" :follows="followsFiltered(post.pet_id)"
-                :url="storeImage.urlDict.get(post.reference)" :poster="posterFiltered(post.owner_id)" 
-                :item="post.id"
+                :url="storeImage.urlDict.get(post.reference)" :poster="posterFiltered(post.owner_id)"
                 class="mb-15">
-                <template #mySlot v-slot:default="{ post}">
-                    <v-col cols="1" justify="end">
-                        <v-btn color="rgba(255, 255, 255, 0" @click="modals.delete = true" flat>
-                            <svg aria-label="Kapat" class="x1lliihq x1n2onr6" color="rgb(100, 100, 100)"
-                                fill="rgb(255, 255, 255)" height="18" role="img" viewBox="0 0 24 24" width="18">
-                                <title>Kapat</title>
-                                <polyline fill="none" points="20.643 3.357 12 12 3.353 20.647" stroke="currentColor"
-                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></polyline>
-                                <line fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="3" x1="20.649" x2="3.354" y1="20.649" y2="3.354"></line>
-                            </svg>
-                        </v-btn>
-                    </v-col>
-                    <CloseVerifyModal  v-model="modals.delete" @deletePost="deleteHandle" v-bind:post="post"></CloseVerifyModal>
-                </template>
             </PostCard>
         </v-card>
 
@@ -50,26 +34,9 @@ import PostCard from '@/components/postcarda.vue'
 import { reactive, computed } from 'vue'
 import { useStoreBasic } from '@/stores/storeBasic';
 import { useStoreImage } from '@/stores/storeImages';
-import CloseVerifyModal from '@/modals/CloseVerifyModal.vue';
 const storeBasic = useStoreBasic()
 const storeImage = useStoreImage()
 
-// const soldiers = reactive({
-//     soldier1:{
-//         name:'hanım',
-//         id:'1',
-//         power:10000,
-//     },
-//     soldier2:{
-//         name:'pırpır',
-//         id:'2',
-//         power:98997,
-//     }
-// })
-const modals = reactive({
-	delete: false,
-
-})
 const postsFiltered = computed(() => {
     return (postID, storeBasic) => {
         return storeImage.posts.filter(x => x.owner_id == storeBasic.user.id)
@@ -100,7 +67,4 @@ const posterFiltered = computed(() => {
         return storeImage.users.filter(x => x.id == userID)[0]
     }
 })
-const deleteHandle = () => {
-    console.log("hello,deletedpost")
-}
 </script>

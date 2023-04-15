@@ -1,6 +1,5 @@
 <template>
 	<v-card class="mx-auto " color="grey-lighten-3" theme="high-contrast" max width="500">
-		<slot name="mySlot" ></slot>
 		<v-row no-gutters class="ma-3 flex-nowrap ">
 			<v-col cols="1" class="align-self-end ml-4"><v-avatar color="grey-darken-3"
 					image="https://www.shortcurlyhaircuts.net/wp-content/uploads/2018/01/whats-unique-about-girls-with-curly-hair-5.jpg"></v-avatar>
@@ -112,7 +111,4 @@ const followStatusChange = () => {
 	}
 	storeImage.get_follows()//replace by post methods, personally prefer passing followed.value to axios.post data for a parameter to either add or delete
 }
-onMounted(() => {
-	console.log(props)
-})
 </script>

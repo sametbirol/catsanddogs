@@ -11,23 +11,17 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive, watch, onBeforeMount } from 'vue'
-import { vAutofocus } from '@/directives/vAutofocus';
-import { vKeyenter } from '@/directives/vKeyenter';
+import { ref, onBeforeMount } from 'vue'
 import { useStoreBasic } from '@/stores/storeBasic.js'
 import Login from '@/components/login.vue';
 import Register from '@/components/register.vue';
 // store
 const store = useStoreBasic()
-// login or register
-// const formTitle = computed(() => {
-//   return (active_tab.value == 1 ? 'Login' : 'Register')
-// })
+
 
 const active_tab = ref(1)
 // tabs
 const tabs = [
-
   {
     id: 1,
     name: 'Login'
@@ -37,6 +31,7 @@ const tabs = [
     name: 'Register'
   },
 ]
+
 onBeforeMount(() => {
   store.get_current_user_by_token()
 })
