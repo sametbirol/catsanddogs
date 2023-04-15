@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-// import ViewMainPage from '@/views/ViewMainPage.vue'
+import ViewMainPage from '@/views/ViewMainPage.vue'
 import ViewAuth from '@/views/ViewAuth.vue'
-// import ViewProfile from '@/views/ViewProfile.vue'
+import ViewProfile from '@/views/ViewProfile.vue'
 import { useStoreBasic } from '@/stores/storeBasic.js'
 import { useStoreImage } from "@/stores/storeImages";
 let storeBasic
@@ -17,12 +17,14 @@ const routes = [
 		name: 'posts',
 		component: () =>
 			import('@/views/ViewMainPage.vue')
+
 	},
 	{
 		path: '/profile',
 		name: 'profile',
 		component: () =>
 			import('@/views/ViewProfile.vue')
+
 	}
 ]
 
@@ -34,11 +36,11 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
 	const storeBasic = useStoreBasic()
 	const storeImage = useStoreImage()
-
 	try {
 		storeBasic.get_current_user_by_token()
 	}
 	catch (err) {
+
 		storeBasic.logout()
 	}
 	try {
@@ -51,9 +53,6 @@ router.beforeEach(async (to, from) => {
 		}
 		if (storeImage.posts == null && storeBasic.user) {
 			storeImage.init()
-		}
-		if(from.name == to.name){
-			router.go()
 		}
 	}
 	catch (err) {

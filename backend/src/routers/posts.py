@@ -41,6 +41,7 @@ def get_db():
         db.close()
 
 
+
 @router.get('/')
 async def get_all_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Posts).all()
@@ -79,6 +80,7 @@ async def get_all_users(db: Session = Depends(get_db)):
 
 @router.post('/')
 async def new_post(request: Request, post: postModel, db: Session = Depends(get_db)):
+
     user = await get_current_user(request)
     if user is None:
         return {"msg": "Authentication error"}
@@ -90,11 +92,10 @@ async def new_post(request: Request, post: postModel, db: Session = Depends(get_
     post_model.owner_id = user.get("id")
     db.add(post_model)
     db.commit()
-    return {"msg": "succesfully created", "post": post, "user": user}
-
-
+    return {"msg": "succesfully created","post":post,"user":user}
+    
 @router.post('/post/delete')
-async def delete_post(post: postToDelete, request: Request, db: Session = Depends(get_db)):
+async def delete_post(post: postToDelete,request:Request,db:Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return False

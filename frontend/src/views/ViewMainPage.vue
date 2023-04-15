@@ -23,10 +23,6 @@
 				</div>
 			</v-col>
 		</v-row>
-
-
-
-
 		<PostCard v-for="post in storeImage.posts" :key="post.id" :post="post" :comments="commentsFiltered(post.id)"
 			:likes="likesFiltered(post.id)" :pet="petFiltered(post.pet_id)" :follows="followsFiltered(post.pet_id)"
 			:url="urlFiltered(post.id)" :poster="posterFiltered(post.owner_id)" class="mb-15" />

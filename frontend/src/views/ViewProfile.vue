@@ -26,8 +26,6 @@
                 :item="post.id"
                 class="mb-15">
                 <template #mySlot v-slot:default="{ post}">
-
-
                     <v-col cols="1" justify="end">
                         <v-btn color="rgba(255, 255, 255, 0" @click="modals.delete = true" flat>
                             <svg aria-label="Kapat" class="x1lliihq x1n2onr6" color="rgb(100, 100, 100)"
@@ -55,9 +53,6 @@ import { useStoreImage } from '@/stores/storeImages';
 import CloseVerifyModal from '@/modals/CloseVerifyModal.vue';
 const storeBasic = useStoreBasic()
 const storeImage = useStoreImage()
-
-
-
 
 // const soldiers = reactive({
 //     soldier1:{

@@ -19,6 +19,7 @@
 		</v-row>
 		<v-row justify="center">
 			<v-img :lazy-src="props.url" :src="props.url" alt="AnimalPhoto" cover class="mt-5 mb-5 " aspect-ratio="1:1" />
+
 		</v-row>
 
 		<v-card-text class="text-h6 py-2 border-b border-t">
@@ -63,7 +64,8 @@
 </template>
 
 <script setup>
-import { ref, computed,onMounted } from 'vue'
+
+import { ref ,computed} from 'vue'
 import { useStoreBasic } from '@/stores/storeBasic.js'
 import { useStoreImage } from '@/stores/storeImages';
 // store
@@ -97,10 +99,6 @@ const commentsView = ref(false)
 const liked = ref(false)
 const followed = ref(props.follows.filter(x => x.user_id == storeBasic.user.id).length
 )
-// const closeModal = () => {
-// 	console
-// }
-// const poster = ref(.username)
 const likeStatusChange = () => {
 	liked.value = !liked.value
 	storeImage.get_likes()//replace by post methods, personally prefer passing liked.value to axios.post data for a parameter to either add or delete
@@ -117,5 +115,4 @@ const followStatusChange = () => {
 onMounted(() => {
 	console.log(props)
 })
-// const bitanem = ref("Ecem")
 </script>

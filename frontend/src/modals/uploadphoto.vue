@@ -61,9 +61,6 @@
                             </v-card>
                         </v-col>
                     </v-row>
-
-
-
                 </v-card>
             </v-form>
             <!-- <closeVerifyModal v-model="verifyClose" @closeUploadModal="closeModalCall"></closeVerifyModal> -->
@@ -83,7 +80,6 @@ import { useStoreImage } from '@/stores/storeImages';
 // store
 const storeBasic = useStoreBasic()
 const storeImage = useStoreImage()
-
 /*
 props
 */
