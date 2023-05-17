@@ -128,4 +128,3 @@ VALUES
     (4, 6, 'Misty is such a happy cat, I love seeing her smile!'),
     (4, 4, 'I agree, even though he looks small, he has a big heart!');
 
-
