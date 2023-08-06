@@ -1,31 +1,33 @@
 <template>
-	<v-container>
-		<v-row><v-col cols="12"><v-btn class="bg-blue-accent-3" @click="upload_image">Upload</v-btn>
-				<uploadphoto v-model="modals.upload"></uploadphoto>
-			</v-col>
+  <v-container>
+    <v-row>
+      <v-col cols="12" class="d-flex flex-row-reverse">
+        <v-btn class="bg-blue-accent-3 " @click="upload_image">Upload</v-btn>
+        <uploadphoto v-model="modals.upload"></uploadphoto>
+      </v-col>
 
-			<v-col cols="12">
-				<div>
-					Username: "{{ storeBasic.user["username"] }}"
-					<v-divider thickness="8"></v-divider>
-					{{ storeImage.posts[0] }} (first)
-					<v-divider thickness="8"></v-divider>
-					{{ storeImage.likes[0] }} (first)
-					<v-divider thickness="8"></v-divider>
-					{{ storeImage.comments[0] }} (first)
-					<v-divider thickness="8"></v-divider>
-					{{ storeImage.pets[0] }} (first)
-					<v-divider thickness="8"></v-divider>
-					{{ storeImage.follows[0] }} (first)
-					<v-divider thickness="8"></v-divider>
-					urlDict.size(also postNumber) : {{ storeImage.urlDict.size }}
-				</div>
-			</v-col>
-		</v-row>
-		<PostCard v-for="post in storeImage.posts" :key="post.id" :post="post" :comments="commentsFiltered(post.id)"
-			:likes="likesFiltered(post.id)" :pet="petFiltered(post.pet_id)" :follows="followsFiltered(post.pet_id)"
-			:url="urlFiltered(post.id)" :poster="posterFiltered(post.owner_id)" class="mb-15" />
-	</v-container>
+      <!-- <v-col cols="12">
+        <div>
+          Username: "{{ storeBasic.user["username"] }}"
+          <v-divider thickness="8"></v-divider>
+          {{ storeImage.posts[0] }} (first)
+          <v-divider thickness="8"></v-divider>
+          {{ storeImage.likes[0] }} (first)
+          <v-divider thickness="8"></v-divider>
+          {{ storeImage.comments[0] }} (first)
+          <v-divider thickness="8"></v-divider>
+          {{ storeImage.pets[0] }} (first)
+          <v-divider thickness="8"></v-divider>
+          {{ storeImage.follows[0] }} (first)
+          <v-divider thickness="8"></v-divider>
+          urlDict.size(also postNumber) : {{ storeImage.urlDict.size }}
+        </div>
+      </v-col> -->
+    </v-row>
+    <PostCard v-for="post in storeImage.posts" :key="post.id" :post="post" :comments="commentsFiltered(post.id)"
+      :likes="likesFiltered(post.id)" :pet="petFiltered(post.pet_id)" :follows="followsFiltered(post.pet_id)"
+      :url="urlFiltered(post.id)" :poster="posterFiltered(post.owner_id)" class="mb-15" />
+  </v-container>
 </template>
 
 <script setup>
@@ -40,14 +42,14 @@ const storeImage = useStoreImage()
 /* computed */
 
 const commentsFiltered = computed(() => {
-	return (postID) => {
-	if (storeImage.comments) {
+  return (postID) => {
+    if (storeImage.comments) {
 
-		return storeImage.comments.filter(x => x.post_id == postID)
-	} else {
-		return []
-	}
-	}
+      return storeImage.comments.filter(x => x.post_id == postID)
+    } else {
+      return []
+    }
+  }
 })
 const likesFiltered = computed(() => {
   return (postID) => {
@@ -98,11 +100,11 @@ const urlFiltered = computed(() => {
   }
 })
 const modals = reactive({
-	upload: false,
+  upload: false,
 
 })
 const upload_image = () => {
-	modals.upload = true
+  modals.upload = true
 }
 </script>
 
