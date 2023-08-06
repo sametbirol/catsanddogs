@@ -19,12 +19,17 @@ Follow these instructions to set up and run the project locally.
 ### Backend Setup
 
 1. Navigate to the backend directory:
+
 >cd backend/src
 
 
 2. Create and activate a virtual environment (Optional, but recommended):
+
 >python -m venv venv
->source venv/bin/activate # On Windows: venv\Scripts\activate
+
+>source venv/bin/activate
+
+>On Windows: venv\Scripts\activate
 
 
 3. Install the required dependencies:
@@ -34,9 +39,13 @@ Follow these instructions to set up and run the project locally.
 ### Frontend Setup
 
 1. Navigate to the frontend directory:
+
 >#from root
+
 >cd frontend
+
 >#from backend/src directory
+
 >cd ../../frontend
 
 
@@ -53,9 +62,13 @@ Follow these instructions to set up and run the project locally.
 ## Usage
 
 1. Start the backend server:
+
 >#from root
+
 >cd backend/src
+
 >#from frontend directory
+
 >cd ../backend/src
 
 
@@ -64,13 +77,15 @@ Follow these instructions to set up and run the project locally.
 
 2. Start the frontend development server:
 >#from root
+
 >cd frontend
+
 >#from backend/src directory
+
 >cd ../../frontend
 
->cd frontend
->npm run dev
 
+>npm run dev
 
 
 3. Open your web browser and access the application at http://localhost:3000/.
