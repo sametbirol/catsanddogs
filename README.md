@@ -1,4 +1,4 @@
-# Project Name
+# Catsanddogs
 
 Social Media Webpage for cats and dogs!
 Technologies:FastAPI,Vuejs,Vuetify
@@ -57,6 +57,14 @@ Follow these instructions to set up and run the project locally.
 1. Simply change the URL in database.py file found at backend/src directory:
 > your sqlalchemy databse url goes here
 > postgresql://postgres:PASSWORD@localhost/DATABASENAME
+
+2. Run the SQL queries given in backend/src/sqlquery folder in order:
+
+>drop_and_create_tables_for_all_models.sql
+
+>all_data.sql
+
+
 
 
 ## Usage
